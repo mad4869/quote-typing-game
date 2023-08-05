@@ -4,3 +4,18 @@ declare type Quote = {
     text: string,
     author: string
 }
+
+declare type GameRules = {
+    isStarted: boolean,
+    countdown: number,
+    targetText: string,
+    targetIndex: number,
+    playerInput: string,
+    isInputError: boolean,
+    answeredCount: number
+}
+
+declare type Action = {
+    type: string,
+    payload?: unknown
+}
