@@ -1,5 +1,4 @@
-// import { useCallback, useMemo, ChangeEvent } from 'react'
-import { useEffect, useReducer, useRef, ChangeEvent } from 'react'
+import { useEffect, useReducer, useCallback, useRef, ChangeEvent } from 'react'
 import { useQuery } from 'react-query'
 import axios from 'axios'
 
@@ -7,7 +6,7 @@ import Quote from "./Quote"
 import Button from './Button'
 import Countdown from './Countdown'
 import InputField from './InputField'
-// import Highlighted from './Highlighted'
+import Highlighted from './Highlighted'
 import Loading from "./Loading"
 import Notice from './Notice'
 
@@ -30,6 +29,7 @@ const Content = () => {
     targetText: '',
     targetIndex: 0,
     playerInput: '',
+    isInputError: false,
     answeredCount: 0
   }
 
@@ -43,6 +43,7 @@ const Content = () => {
           targetText: action.payload as string,
           targetIndex: 0,
           playerInput: '',
+          isInputError: false,
           answeredCount: 0
         }
       case 'FINISH_GAME':
@@ -73,6 +74,16 @@ const Content = () => {
           targetText: action.payload as string,
           targetIndex: 0
         }
+      case 'MARK_INPUT_ERROR':
+        return {
+          ...state,
+          isInputError: true,
+        }
+      case 'CLEAR_INPUT_ERROR':
+        return {
+          ...state,
+          isInputError: false
+        }
       default:
         return state
     }
@@ -80,7 +91,7 @@ const Content = () => {
 
   const [game, dispatch] = useReducer(reducer, initialState)
 
-  const randomizeText = (prevIndex: number = 0) => {
+  const randomizeText = useCallback((prevIndex: number = 0) => {
     let index = Math.floor(Math.random() * (data?.length ?? 0))
     
     while (index === prevIndex) {
@@ -88,6 +99,17 @@ const Content = () => {
     }
 
     return data?.[index]?.text ?? ''
+  }, [data])
+
+  const renderText = () => {
+    const text = game.targetText.split(' ')
+    return text.map((word: string, index: number) => {
+      return (
+        index === game.targetIndex ?
+        <Highlighted key={index}>{word}{index !== text.length - 1 ? ' ' : ''}</Highlighted> :
+        <span key={index}>{word}{index !== text.length - 1 ? ' ' : ''}</span>
+      )
+    })
   }
 
   const handleClick = () => {
@@ -122,6 +144,12 @@ const Content = () => {
       const playerInput = game.playerInput.toLowerCase()
       const endTargetText = game.targetIndex === game.targetText.split(' ').length - 1
 
+      if(!targetWord.startsWith(playerInput)) {
+        dispatch({ type: 'MARK_INPUT_ERROR' })
+      } else {
+        dispatch({ type: 'CLEAR_INPUT_ERROR' })
+      }
+
       if (targetWord === playerInput) {
         dispatch({ 
           type: 'MARK_ANSWER_CORRECT', 
@@ -132,12 +160,12 @@ const Content = () => {
         dispatch({ type: 'CHANGE_TARGET_TEXT', payload: randomizeText(game.targetIndex) })
       }
     }
-  })
+  }, [game.isStarted, game.targetText, game.targetIndex, game.playerInput, game.answeredCount, randomizeText])
 
   return (
     <main>
       <section className="quote-container">
-        <Quote gameStarted={game.isStarted} content={game.targetText} />
+        <Quote gameStarted={game.isStarted} content={renderText()} />
         <Notice gameFinished={!game.isStarted && game.countdown === 0} answeredCount={game.answeredCount} />
       </section>
       <section className='toolbar'>
@@ -146,7 +174,7 @@ const Content = () => {
         }
         <Loading isLoading={isLoading} />
         <Button gameReady={!isLoading && !error} gameStarted={game.isStarted} gameFinished={!game.isStarted && game.countdown === 0} handleClick={handleClick} />
-        <InputField gameStarted={game.isStarted} playerInput={game.playerInput} handleInput={handleInput} inputRef={inputRef} />
+        <InputField gameStarted={game.isStarted} playerInput={game.playerInput} inputError={game.isInputError} handleInput={handleInput} inputRef={inputRef} />
         <Countdown gameStarted={game.isStarted} count={game.countdown} />
       </section>
     </main>

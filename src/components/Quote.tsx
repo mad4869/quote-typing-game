@@ -1,9 +1,9 @@
 import React from "react"
 
-const Quote: React.FC<{ gameStarted: boolean, content: string }> = ({ gameStarted, content }) => {
+const Quote: React.FC<{ gameStarted: boolean, content: JSX.Element[] }> = ({ gameStarted, content }) => {
   return (
     gameStarted &&
-    <h1 className="quote">{content}</h1>
+    <div className="quote">{content}</div>
   )
 }
 

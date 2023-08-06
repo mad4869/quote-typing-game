@@ -1,6 +1,8 @@
 :root {
     --primary-color: rgb(86, 11, 216);
+    --primary-shadow: rgba(86, 11, 216, 0.5);
     --primary-gradient: linear-gradient(90deg, rgb(100, 194, 196) 0%, rgba(85,18,153,1) 100%);
+    --hover-color: rgb(61, 10, 148);
     --disabled-color: #b8b0c5;
 }
 
@@ -85,10 +87,13 @@ header {
 
 .quote {
     font-family: 'Bungee', sans-serif;
-    font-size: 2rem;
+    font-size: 1.5rem;
     color: transparent;
     -webkit-text-stroke: 1px var(--primary-color);
     text-align: center;
+    padding: 1rem 2rem;
+    border-radius: 1rem;
+    box-shadow: 3px 5px 10px 0 var(--primary-shadow);
 }
 
 .quote-container, .toolbar {
@@ -96,18 +101,55 @@ header {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 5rem;
     margin-left: auto;
     margin-right: auto;
 }
 
 .quote-container {
     width: 80%;
+    margin-top: 7rem;
+}
+
+.highlighted {
+    color: var(--primary-color);
+    text-decoration: underline;
+}
+
+.notice {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1.5rem 2rem 0.5rem 2rem;
+    border-radius: 1rem;
+    box-shadow: 3px 5px 10px 0 var(--primary-shadow);
+}
+
+.notice p:first-of-type {
+    color: var(--primary-color);
+}
+
+.notice p:last-of-type {
+    font-size: 3rem;
+    background: var(--primary-gradient);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.trophy {
+    position: absolute;
+    width: 3rem;
+    height: 3rem;
+    top: -2rem;
+    background: #fff url('./assets/trophy.png');
+    background-size: contain;
 }
 
 .toolbar {
     width: 40%;
     gap: 1rem;
+    margin-top: 5rem;
 }
 
 .loading-container {
@@ -132,6 +174,15 @@ header {
     border: none;
     border-radius: 1rem;
     cursor: pointer;
+    box-shadow: 1px 4px 10px 0 rgba(0, 0, 0, 0.5);
+}
+
+.start:hover {
+    background-color: var(--hover-color);
+}
+
+.start:active {
+    box-shadow: inset 1px 4px 10px 0 rgba(0, 0, 0, 0.5);
 }
 
 .countdown {
@@ -185,11 +236,16 @@ input[type='text'] {
     width: 100%;
     padding: 0.5rem 1rem;
     font-size: 2rem;
-    color: var(--primary-color);
     border: 1px solid #afafaf;
     border-radius: 0.5rem;
 }
 
-input[type='text']:focus-visible {
+input[type='text'].input:focus-visible {
+    color: var(--primary-color);
     outline: 3px solid var(--primary-color);
+}
+
+input[type='text'].input-error:focus-visible {
+    color: maroon;
+    outline: 3px solid maroon;
 }

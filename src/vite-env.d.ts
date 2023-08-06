@@ -11,7 +11,7 @@ declare type GameState = {
     targetText: string,
     targetIndex: number,
     playerInput: string,
-    // isInputError: boolean,
+    isInputError: boolean,
     answeredCount: number
 }
 
