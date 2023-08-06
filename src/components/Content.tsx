@@ -164,7 +164,7 @@ const Content = () => {
 
   return (
     <main>
-      <section className="quote-container">
+      <section className="text-container">
         <Quote gameStarted={game.isStarted} content={renderText()} />
         <Notice gameFinished={!game.isStarted && game.countdown === 0} answeredCount={game.answeredCount} />
       </section>
