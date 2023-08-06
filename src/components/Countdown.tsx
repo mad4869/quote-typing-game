@@ -1,12 +1,12 @@
 import React from 'react'
 
-const Countdown: React.FC<{ count: number }> = ({ count }) => {
+const Countdown: React.FC<{ gameStarted: boolean, count: number }> = ({ gameStarted, count }) => {
   return (
-    <div className={`countdown 
-    ${count > 30 ? 'safe' 
-    : count > 10 ? 'caution' 
-    : 'danger'}`}>
-      {count}
+    gameStarted &&
+    <div className='countdown'>
+      <div className='countdown-bar-container'>
+        <div className={`countdown-bar ${count > 30 ? 'safe' : count > 10 ? 'caution' : 'danger'}`}></div>
+      </div>
     </div>
   )
 }

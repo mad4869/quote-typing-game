@@ -1,7 +1,8 @@
 import React from 'react'
 
-const Button: React.FC<{ gameFinished: boolean, handleClick: () => void }> = ({ gameFinished, handleClick }) => {
+const Button: React.FC<{ gameReady: boolean, gameStarted: boolean, gameFinished: boolean, handleClick: () => void }> = ({ gameReady, gameStarted, gameFinished, handleClick }) => {
   return (
+    gameReady && !gameStarted &&
     <button onClick={handleClick} className='start'>
       {
         !gameFinished ?

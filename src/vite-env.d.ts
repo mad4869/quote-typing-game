@@ -5,13 +5,13 @@ declare type Quote = {
     author: string
 }
 
-declare type GameRules = {
+declare type GameState = {
     isStarted: boolean,
     countdown: number,
     targetText: string,
     targetIndex: number,
     playerInput: string,
-    isInputError: boolean,
+    // isInputError: boolean,
     answeredCount: number
 }
 
