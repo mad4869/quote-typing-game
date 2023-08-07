@@ -1,31 +1,19 @@
 import { useEffect, useReducer, useCallback, useRef, ChangeEvent } from 'react'
-import { useQuery } from 'react-query'
-import axios from 'axios'
 
-import Quote from "./Quote"
-import Button from './Button'
-import Countdown from './Countdown'
-import InputField from './InputField'
-import Highlighted from './Highlighted'
-import Loading from "./Loading"
-import Notice from './Notice'
+import { GameContext } from './GameContext'
+import { QuoteContext } from './QuoteContext'
+import MainText from './MainText'
+import Toolbar from './Toolbar'
+import useQuote from '../hooks/useQuote'
+import reducer from '../utils/reducer'
+import { COUNTDOWN_DURATION } from '../utils/constant'
 
 const Content = () => {
-  const fetchData = async ():Promise<Quote[]> => {
-    const { data } = await axios.get('https://type.fit/api/quotes')
-    return data
-  }
-
-  const { isLoading, error, data } = useQuery<Quote[], Error>({
-    queryKey: ['Quote'],
-    queryFn: fetchData,
-    staleTime: 60000,
-    refetchOnMount: false
-  })
+  const { isLoading, error, data } = useQuote()
 
   const initialState: GameState = {
     isStarted: false,
-    countdown: 60,
+    countdown: COUNTDOWN_DURATION,
     targetText: '',
     targetIndex: 0,
     playerInput: '',
@@ -33,84 +21,7 @@ const Content = () => {
     answeredCount: 0
   }
 
-  const reducer = (state: GameState, action: Action) => {
-    switch (action.type) {
-      case 'START_GAME':
-        return {
-          ...state,
-          isStarted: true,
-          countdown: 60,
-          targetText: action.payload as string,
-          targetIndex: 0,
-          playerInput: '',
-          isInputError: false,
-          answeredCount: 0
-        }
-      case 'FINISH_GAME':
-        return {
-          ...state,
-          isStarted: false
-        }
-      case 'COUNTING_DOWN':
-        return {
-          ...state,
-          countdown: (action.payload as number) - 1
-        }
-      case 'SET_PLAYER_INPUT':
-        return {
-          ...state,
-          playerInput: action.payload as string
-        }
-      case 'MARK_ANSWER_CORRECT':
-        return {
-          ...state,
-          targetIndex: (action.payload as { targetIndex: number }).targetIndex + 1,
-          playerInput: '',
-          answeredCount:(action.payload as { answeredCount: number }).answeredCount + 1
-        }
-      case 'CHANGE_TARGET_TEXT':
-        return {
-          ...state,
-          targetText: action.payload as string,
-          targetIndex: 0
-        }
-      case 'MARK_INPUT_ERROR':
-        return {
-          ...state,
-          isInputError: true,
-        }
-      case 'CLEAR_INPUT_ERROR':
-        return {
-          ...state,
-          isInputError: false
-        }
-      default:
-        return state
-    }
-  }
-
   const [game, dispatch] = useReducer(reducer, initialState)
-
-  const randomizeText = useCallback((prevIndex: number = 0) => {
-    let index = Math.floor(Math.random() * (data?.length ?? 0))
-    
-    while (index === prevIndex) {
-      index = Math.floor(Math.random() * (data?.length ?? 0))
-    }
-
-    return data?.[index]?.text ?? ''
-  }, [data])
-
-  const renderText = () => {
-    const text = game.targetText.split(' ')
-    return text.map((word: string, index: number) => {
-      return (
-        index === game.targetIndex ?
-        <Highlighted key={index}>{word}{index !== text.length - 1 ? ' ' : ''}</Highlighted> :
-        <span key={index}>{word}{index !== text.length - 1 ? ' ' : ''}</span>
-      )
-    })
-  }
 
   const handleClick = () => {
     dispatch({ type: 'START_GAME', payload: randomizeText() })
@@ -121,6 +32,16 @@ const Content = () => {
   }
 
   const inputRef = useRef<HTMLInputElement | null>(null)
+
+  const randomizeText = useCallback((prevIndex: number = 0) => {
+    let index = Math.floor(Math.random() * (data?.length ?? 0))
+    
+    while (index === prevIndex) {
+      index = Math.floor(Math.random() * (data?.length ?? 0))
+    }
+
+    return data?.[index]?.text ?? ''
+  }, [data])
 
   useEffect(() => {
     while (game.isStarted && game.countdown > 0) {
@@ -164,19 +85,12 @@ const Content = () => {
 
   return (
     <main>
-      <section className="text-container">
-        <Quote gameStarted={game.isStarted} content={renderText()} />
-        <Notice gameFinished={!game.isStarted && game.countdown === 0} answeredCount={game.answeredCount} />
-      </section>
-      <section className='toolbar'>
-        {
-          error && <p>{error.message}</p>
-        }
-        <Loading isLoading={isLoading} />
-        <Button gameReady={!isLoading && !error} gameStarted={game.isStarted} gameFinished={!game.isStarted && game.countdown === 0} handleClick={handleClick} />
-        <InputField gameStarted={game.isStarted} playerInput={game.playerInput} inputError={game.isInputError} handleInput={handleInput} inputRef={inputRef} />
-        <Countdown gameStarted={game.isStarted} count={game.countdown} />
-      </section>
+      <GameContext.Provider value={game}>
+        <MainText />
+      <QuoteContext.Provider value={{isLoading, error, data}}>
+        <Toolbar handleClick={handleClick} handleInput={handleInput} inputRef={inputRef} />
+      </QuoteContext.Provider>
+      </GameContext.Provider>
     </main>
   )
 }
