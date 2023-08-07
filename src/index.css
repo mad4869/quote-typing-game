@@ -31,6 +31,11 @@ ul li {
     list-style: none;
 }
 
+#root {
+    min-height: 100vh;
+    position: relative;
+}
+
 header {
     height: 25vh;
     display: flex;
@@ -154,6 +159,8 @@ header {
     padding: 1.5rem 2rem 0.5rem 2rem;
     border-radius: 1rem;
     box-shadow: 3px 5px 10px 0 var(--primary-shadow);
+    opacity: 0;
+    animation: fadeIn 1s ease-in-out forwards;
 }
 
 .notice p:first-of-type {
@@ -175,6 +182,15 @@ header {
     background: #fff url('./assets/trophy.png');
     background-size: contain;
 }
+
+@keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
 
 .toolbar {
     width: 40%;
@@ -234,10 +250,8 @@ header {
 
 .countdown-bar {
     grid-area: 1/1;
-    width: 100%;
     height: 100%;
     border-radius: 9999px;
-    animation: countdown-time 60s linear;
 }
 
 .countdown-count {
@@ -253,31 +267,6 @@ header {
     color: var(--primary-color);
     font-weight: 600;
     border-radius: 50%;
-}
-
-@keyframes countdown-time {
-    from {
-        width: 100%;
-    }
-    to {
-        width: 0%;
-    }
-}
-
-.safe, .caution, .danger {
-    transition: background 500ms;
-}
-
-.safe {
-    background: var(--primary-gradient);
-}
-
-.caution {
-    background: var(--caution-gradient);
-}
-
-.danger {
-    background: var(--danger-gradient);
 }
 
 input[type='text'] {
@@ -297,4 +286,17 @@ input[type='text'].input:focus-visible {
 input[type='text'].input-error:focus-visible {
     color: var(--danger-color);
     outline: 3px solid var(--danger-color);
+}
+
+footer {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    padding-bottom: 0.5rem;
+    text-align: center;
+    font-size: 0.75rem;
+}
+
+footer > a {
+    color: var(--primary-color);
 }
