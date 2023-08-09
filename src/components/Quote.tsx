@@ -1,11 +1,17 @@
-import React from "react"
+import { useContext } from "react"
 
-const Quote: React.FC<{ gameStarted: boolean, content: JSX.Element[] }> = ({ gameStarted, content }) => {
+import { GameContext } from './contexts/GameContext'
+import useRenderText from '../hooks/useRenderText'
+
+const Quote = () => {
+  const game = useContext(GameContext)
+  const renderedText = useRenderText(game)
+
   return (
-    gameStarted &&
+    game.isStarted &&
     <div className="quote-container">
       <div className="quotation-mark"><p>“”</p></div>
-      <div className="quote">{content}</div>
+      <div className="quote">{renderedText}</div>
     </div>
   )
 }

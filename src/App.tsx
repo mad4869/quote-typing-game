@@ -1,8 +1,8 @@
 import { QueryClientProvider, QueryClient } from 'react-query'
 
-import Title from './components/Title'
-import Content from './components/Content'
-import Footer from './components/Footer'
+import Title from './components/layout/Title'
+import Content from './components/layout/Content'
+import Footer from './components/layout/Footer'
 
 const appClient = new QueryClient()
 

@@ -1,3 +1,0 @@
-const COUNTDOWN_DURATION = 60
-
-export { COUNTDOWN_DURATION }

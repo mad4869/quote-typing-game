@@ -1,12 +1,10 @@
-import { COUNTDOWN_DURATION } from "./constant"
-
 const reducer = (state: GameState, action: Action) => {
     switch (action.type) {
       case 'START_GAME':
         return {
           ...state,
           isStarted: true,
-          countdown: COUNTDOWN_DURATION,
+          countdown: 60,
           targetText: action.payload as string,
           targetIndex: 0,
           playerInput: '',

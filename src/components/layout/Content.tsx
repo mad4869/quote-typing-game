@@ -1,19 +1,20 @@
-import { useEffect, useReducer, useCallback, useRef, ChangeEvent } from 'react'
+import { useEffect, useReducer, useRef, ChangeEvent } from 'react'
 
-import { GameContext } from './GameContext'
-import { QuoteContext } from './QuoteContext'
+import { GameContext } from '../contexts/GameContext'
+import { QuoteContext } from '../contexts/QuoteContext'
 import MainText from './MainText'
 import Toolbar from './Toolbar'
-import useQuote from '../hooks/useQuote'
-import reducer from '../utils/reducer'
-import { COUNTDOWN_DURATION } from '../utils/constant'
+import reducer from '../../hooks/reducer'
+import useQuote from '../../hooks/useQuote'
+import useRandomizeText from '../../hooks/useRandomizeText'
 
 const Content = () => {
   const { isLoading, error, data } = useQuote()
+  const randomizeText = useRandomizeText(data)
 
   const initialState: GameState = {
     isStarted: false,
-    countdown: COUNTDOWN_DURATION,
+    countdown: 60,
     targetText: '',
     targetIndex: 0,
     playerInput: '',
@@ -24,7 +25,7 @@ const Content = () => {
   const [game, dispatch] = useReducer(reducer, initialState)
 
   const handleClick = () => {
-    dispatch({ type: 'START_GAME', payload: randomizeText() })
+    dispatch({ type: 'START_GAME', payload: randomizeText('') })
   }
 
   const handleInput: React.FormEventHandler<HTMLInputElement> = (e: ChangeEvent<HTMLInputElement>) => {
@@ -32,16 +33,6 @@ const Content = () => {
   }
 
   const inputRef = useRef<HTMLInputElement | null>(null)
-
-  const randomizeText = useCallback((prevIndex: number = 0) => {
-    let index = Math.floor(Math.random() * (data?.length ?? 0))
-    
-    while (index === prevIndex) {
-      index = Math.floor(Math.random() * (data?.length ?? 0))
-    }
-
-    return data?.[index]?.text ?? ''
-  }, [data])
 
   useEffect(() => {
     while (game.isStarted && game.countdown > 0) {
@@ -78,7 +69,7 @@ const Content = () => {
       }
 
       if (targetWord === playerInput && endTargetText) {
-        dispatch({ type: 'CHANGE_TARGET_TEXT', payload: randomizeText(game.targetIndex) })
+        dispatch({ type: 'CHANGE_TARGET_TEXT', payload: randomizeText(game.targetText) })
       }
     }
   }, [game.isStarted, game.targetText, game.targetIndex, game.playerInput, game.answeredCount, randomizeText])

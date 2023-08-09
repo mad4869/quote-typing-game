@@ -1,16 +1,19 @@
-import React from 'react'
+import { useContext } from 'react'
+
+import { GameContext } from './contexts/GameContext'
 
 const InputField: React.FC<{ 
-  gameStarted: boolean, 
-  playerInput: string, 
-  inputError: boolean,
-  handleInput: React.FormEventHandler<HTMLInputElement>,
-  inputRef: React.MutableRefObject<HTMLInputElement | null> }> = 
-  ({ gameStarted, playerInput, inputError, handleInput, inputRef }) => {
-  return (
-    gameStarted &&
-    <input type='text' value={playerInput} onChange={handleInput} ref={inputRef} className={inputError ? 'input-error' : 'input'} />
-    )
+  handleInput: React.FormEventHandler<HTMLInputElement>, 
+  inputRef: React.MutableRefObject<HTMLInputElement | null> 
+}> = 
+  ({ handleInput, inputRef }) => {
+    const game = useContext(GameContext)
+
+    return (
+      game.isStarted &&
+      <input type='text' value={game.playerInput} onChange={handleInput} ref={inputRef} 
+      className={game.isInputError ? 'input-error' : 'input'} />
+      )
 }
 
 export default InputField

@@ -1,8 +1,17 @@
-import React from 'react'
+import { useContext } from 'react'
 
-const Button: React.FC<{ gameReady: boolean, gameStarted: boolean, gameFinished: boolean, handleClick: () => void }> = ({ gameReady, gameStarted, gameFinished, handleClick }) => {
+import { GameContext } from './contexts/GameContext'
+import { QuoteContext } from './contexts/QuoteContext'
+
+const Button: React.FC<{ handleClick: () => void }> = ({ handleClick }) => {
+  const game = useContext(GameContext)
+  const { isLoading, error } = useContext(QuoteContext)
+
+  const gameReady = !isLoading && !error
+  const gameFinished = !game.isStarted && game.countdown === 0
+
   return (
-    gameReady && !gameStarted &&
+    gameReady && !game.isStarted &&
     <button onClick={handleClick} className='start' title='Start typing!'>
       {
         !gameFinished ?

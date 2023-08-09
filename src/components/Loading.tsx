@@ -1,7 +1,11 @@
-import React from 'react'
+import { useContext } from 'react'
 import ReactLoading from 'react-loading'
 
-const Loading: React.FC<{isLoading: boolean}> = ({ isLoading }) => {
+import { QuoteContext } from './contexts/QuoteContext'
+
+const Loading = () => {
+  const { isLoading } = useContext(QuoteContext)
+
   return (
     isLoading &&
     <div className='loading-container'>

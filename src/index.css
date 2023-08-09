@@ -1,10 +1,11 @@
 :root {
-    --primary-color: rgb(86, 11, 216);
+    --primary-color: #560bd8;
     --primary-shadow: rgba(86, 11, 216, 0.5);
     --primary-gradient: linear-gradient(90deg, rgb(100, 194, 196) 0%, rgba(85,18,153,1) 100%);
-    --secondary-color: rgb(100, 194, 196);
-    --hover-color: rgb(61, 10, 148);
+    --secondary-color: #64c2c4;
+    --hover-color: #3d0a94;
     --disabled-color: #e5d9f9;
+    --caution-color: #d38c2f;
     --caution-gradient: linear-gradient(90deg, rgb(234, 150, 40) 0%, rgb(234, 80, 11) 100%);
     --danger-color: #d32f2f;
     --danger-gradient: linear-gradient(90deg, rgb(234, 40, 40) 0%, rgb(202, 36, 18) 100%);
@@ -192,6 +193,14 @@ header {
     }
   }
 
+.error {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--danger-gradient);
+    color: #fff;
+}
+
 .toolbar {
     width: 40%;
     gap: 2rem;
@@ -264,7 +273,6 @@ header {
     margin: 0 auto;
     background-color: rgba(255, 255, 255, .3);
     backdrop-filter: blur(0.5rem);
-    color: var(--primary-color);
     font-weight: 600;
     border-radius: 50%;
 }
