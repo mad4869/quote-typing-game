@@ -4,14 +4,15 @@ const useRandomizeText = (data: Quote[] | undefined) => {
     const randomizeText = useCallback((prevText: string) => {
         if (data?.length === 0) {
             return ''
+        } else if (data?.length === 1) {
+            return prevText
         } else {
-            let index = Math.floor(Math.random() * (data?.length ?? 0))
-            let newText = data?.[index]?.text
-
-            while (newText === prevText) {
+            let index = 0
+            let newText = ''
+            do {
                 index = Math.floor(Math.random() * (data?.length ?? 0))
-                newText = data?.[index]?.text
-            }
+                newText = data?.[index]?.text ?? ''
+            } while (newText === prevText)
 
             return newText
         }
