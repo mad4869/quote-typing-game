@@ -1,4 +1,4 @@
-const reducer = (state: GameState, action: Action) => {
+const reducer = (state: GameState, action: GameAction) => {
     switch (action.type) {
       case 'START_GAME':
         return {

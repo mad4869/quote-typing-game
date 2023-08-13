@@ -15,7 +15,7 @@ declare type GameState = {
     answeredCount: number
 }
 
-declare type Action = {
+declare type GameAction = {
     type: string,
     payload?: unknown
 }
