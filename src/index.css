@@ -76,7 +76,7 @@ header {
     margin: 0 auto;
     letter-spacing: .15em;
     animation: 
-        typing 4s steps(20, end),
+        typing 4s steps(15, end),
         blink-caret .75s step-end infinite;
 }
 
