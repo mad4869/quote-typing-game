@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 
 const useRandomizeText = (data: Quote[] | undefined) => {
-    const randomizeText = useCallback((prevText: string) => {
+    const randomizeText = useCallback((prevText: string = '') => {
         if (data?.length === 0) {
             return ''
         } else if (data?.length === 1) {

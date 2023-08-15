@@ -25,7 +25,7 @@ const Content = () => {
   const [game, dispatch] = useReducer(reducer, initialState)
 
   const handleClick = () => {
-    dispatch({ type: 'START_GAME', payload: randomizeText('') })
+    dispatch({ type: 'START_GAME', payload: randomizeText() })
   }
 
   const handleInput: React.FormEventHandler<HTMLInputElement> = (e: ChangeEvent<HTMLInputElement>) => {
