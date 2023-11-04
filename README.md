@@ -8,7 +8,7 @@ The player should type as many words as they can within a 60-second timeframe.
 
 ## Demo
 
-<https://mad4869.netlify.com/library/typing-game>
+-
 
 ![Welcome screen](./docs/initial.png)
 
