@@ -8,7 +8,7 @@ The player should type as many words as they can within a 60-second timeframe.
 
 ## Demo
 
-<https://mad4869.netlify.com/library/typing-game>
+[quote-typing-game.vercel.app](https://quote-typing-game.vercel.app/) (also available as [Progressive Web App](https://github.com/mad4869/quote-typing-game-pwa))
 
 ![Welcome screen](./docs/initial.png)
 
